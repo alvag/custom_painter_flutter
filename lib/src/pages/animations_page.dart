@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as Math;
 
 class AnimationsPage extends StatelessWidget {
   @override
@@ -16,16 +17,21 @@ class CuadradoAnimado extends StatefulWidget {
   _CuadradoAnimadoState createState() => _CuadradoAnimadoState();
 }
 
-class _CuadradoAnimadoState extends State<CuadradoAnimado>
-    with SingleTickerProviderStateMixin {
+class _CuadradoAnimadoState extends State<CuadradoAnimado> with SingleTickerProviderStateMixin {
   AnimationController animationCtrl;
   Animation<double> rotation;
 
   @override
   void initState() {
-    animationCtrl = new AnimationController(
-        vsync: this, duration: Duration(milliseconds: 4000));
-    rotation = new Tween(begin: 0.0, end: 2.0).animate(animationCtrl);
+    animationCtrl = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
+    rotation = new Tween(begin: 0.0, end: 2.0 * Math.pi).animate(animationCtrl);
+
+    animationCtrl.addListener(() {
+      print('Status: ${animationCtrl.status}');
+      if (animationCtrl.status == AnimationStatus.completed) {
+        animationCtrl.reverse();
+      }
+    });
 
     super.initState();
   }
